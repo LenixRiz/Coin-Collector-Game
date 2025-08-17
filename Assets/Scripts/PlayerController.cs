@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float health = 100f;
     private Vector2 moveInput;
 
-    public static event Action<float> OnPlayerDamaged;
+    public static event Action<float> OnHealthChanged;
+    public static event Action OnPlayerTookDamaged;
     public static Func<float> GetPlayerHealth;
 
     private void OnEnable()
@@ -25,6 +26,13 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        // Announce our starting health to any listeners (like the UI) 
+        // So there will be no null error if player got deleted before the game played
+        OnHealthChanged?.Invoke(health);
     }
 
     private void Update()
@@ -50,6 +58,10 @@ public class PlayerController : MonoBehaviour
     private void TakeDamage(float damage)
     {
         health -= damage;
+ 
+        Debug.Log($"Player got injuried! Health {health}");
+        OnHealthChanged?.Invoke(health);
+        OnPlayerTookDamaged?.Invoke();
 
         if (health <= 0)
         {
@@ -57,9 +69,5 @@ public class PlayerController : MonoBehaviour
             health = 0;
             Destroy(gameObject);
         }
-
-        Debug.Log($"Player got injuried! Health {health}");
-        OnPlayerDamaged?.Invoke(health);
     }
-
 }

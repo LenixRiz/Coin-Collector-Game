@@ -9,13 +9,13 @@ public class SoundManager : MonoBehaviour
     private void OnEnable()
     {
         Coin.OnCoinCollected += CoinCollectedPlay;
-        PlayerController.OnPlayerDamaged += PlayerTakeDamagePlay;
+        PlayerController.OnPlayerTookDamaged += PlayerTakeDamagePlay;
     }
 
     private void OnDisable()
     {
         Coin.OnCoinCollected -= CoinCollectedPlay;
-        PlayerController.OnPlayerDamaged -= PlayerTakeDamagePlay;
+        PlayerController.OnPlayerTookDamaged -= PlayerTakeDamagePlay;
     }
 
     private void Awake()
@@ -31,7 +31,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private void PlayerTakeDamagePlay(float health)
+    private void PlayerTakeDamagePlay()
     {
         if (playerTakeDamageSound != null)
         {
