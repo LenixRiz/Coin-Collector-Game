@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI totalCoinLeftTextMesh;
     [SerializeField] private TextMeshProUGUI speedTextMesh;
     [SerializeField] private TextMeshProUGUI coinTextMesh;
+    [SerializeField] private TextMeshProUGUI highScoreTextMesh;
     [SerializeField] private TextMeshProUGUI gameOverScoreText;
     [SerializeField] private TextMeshProUGUI gameWonScoreText;
     [SerializeField] private Button restartButton;
@@ -23,6 +25,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameOver += OnPlayerGameOver;
         GameManager.OnGameWon += OnPlayerWon;
         GameManager.OnTotalCoinUpdated += UpdateTotalCoinLeft;
+        GameManager.OnHighscoreUpdated += UpdateHighScore;
         PlayerController.OnPowerUpStatusUpdated += UpdatePowerUpStatus;
         Coin.OnPowerUpStatusUpdated += UpdatePowerUpStatus;
         restartButton.onClick.AddListener(RestartGame);
@@ -35,6 +38,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameOver -= OnPlayerGameOver;
         GameManager.OnGameWon -= OnPlayerWon;
         GameManager.OnTotalCoinUpdated -= UpdateTotalCoinLeft;
+        GameManager.OnHighscoreUpdated -= UpdateHighScore;
         PlayerController.OnPowerUpStatusUpdated -= UpdatePowerUpStatus;
         Coin.OnPowerUpStatusUpdated -= UpdatePowerUpStatus;
         restartButton.onClick.RemoveListener(RestartGame);
@@ -85,10 +89,16 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void UpdateHighScore(string text, int highScore)
+    {
+        highScoreTextMesh.text = $"{text} {highScore}";
+    }
+
     public void RestartGame() //Made it public so it can be used as onClick in the UI inspector
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Debug.Log($"Highscore from PlayerPrefs: {PlayerPrefs.GetInt("HighScore")}");
     }
 
     public void GoToMainMenu()

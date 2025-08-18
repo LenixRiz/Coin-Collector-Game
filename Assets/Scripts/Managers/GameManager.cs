@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,10 +7,12 @@ public class GameManager : MonoBehaviour
     private float totalCoinCollected = 0;
     private int totalCoin;
     private int finalScore;
+    private int highscore;
     public static event Action<float> OnScoreUpdated;
     public static event Action<int> OnGameOver;
     public static event Action<int> OnGameWon;
     public static event Action<int> OnTotalCoinUpdated;
+    public static event Action<string, int> OnHighscoreUpdated;
 
     private void OnEnable()
     {
@@ -25,9 +28,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // Load the highscore from PlayerPrefs when the game starts. Default to 0 if it doesn't exist.
+        highscore = PlayerPrefs.GetInt("HighScore", 0);
         InitializeCoinCount();
         OnScoreUpdated?.Invoke(totalCoinCollected);
         OnTotalCoinUpdated?.Invoke(totalCoin);
+        OnHighscoreUpdated?.Invoke("Highscore: ", highscore); // call and announce the saved highscore so it will get updated on ui
     }
 
     private void InitializeCoinCount()
@@ -68,8 +74,23 @@ public class GameManager : MonoBehaviour
             Debug.Log("You won!");
             FinalScore();
             OnGameWon?.Invoke(finalScore);
+            SaveHighScore(finalScore);
         }
 
         OnScoreUpdated?.Invoke(totalCoinCollected);
+    }
+
+    private void SaveHighScore(int value)
+    {
+        if (finalScore > highscore)
+        {
+            Debug.Log("Saving new highscore!");
+            highscore = finalScore;
+            PlayerPrefs.SetInt("HighScore", highscore);
+            PlayerPrefs.Save();
+        }
+
+        int updateHighScore = PlayerPrefs.GetInt("HighScore");
+        OnHighscoreUpdated?.Invoke("Highscore: ", updateHighScore);
     }
 }
