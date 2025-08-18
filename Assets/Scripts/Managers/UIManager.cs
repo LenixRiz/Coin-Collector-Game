@@ -7,7 +7,9 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreTextMesh;
     [SerializeField] private TextMeshProUGUI healthTextMesh;
-    [SerializeField] private TextMeshProUGUI TotalCoinLeftTextMesh;
+    [SerializeField] private TextMeshProUGUI totalCoinLeftTextMesh;
+    [SerializeField] private TextMeshProUGUI speedTextMesh;
+    [SerializeField] private TextMeshProUGUI coinTextMesh;
     [SerializeField] private TextMeshProUGUI gameOverScoreText;
     [SerializeField] private TextMeshProUGUI gameWonScoreText;
     [SerializeField] private Button restartButton;
@@ -18,9 +20,11 @@ public class UIManager : MonoBehaviour
     {
         PlayerController.OnHealthChanged += UpdateHealth;
         GameManager.OnScoreUpdated += UpdateScore;
-        GameManager.CountAllCoinsInScene += UpdateTotalCoinLeft;
         GameManager.OnGameOver += OnPlayerGameOver;
         GameManager.OnGameWon += OnPlayerWon;
+        GameManager.OnTotalCoinUpdated += UpdateTotalCoinLeft;
+        PlayerController.OnPowerUpStatusUpdated += UpdatePowerUpStatus;
+        Coin.OnPowerUpStatusUpdated += UpdatePowerUpStatus;
         restartButton.onClick.AddListener(RestartGame);
     }
 
@@ -28,13 +32,15 @@ public class UIManager : MonoBehaviour
     {
         PlayerController.OnHealthChanged -= UpdateHealth;
         GameManager.OnScoreUpdated -= UpdateScore;
-        GameManager.CountAllCoinsInScene -= UpdateTotalCoinLeft;
         GameManager.OnGameOver -= OnPlayerGameOver;
         GameManager.OnGameWon -= OnPlayerWon;
+        GameManager.OnTotalCoinUpdated -= UpdateTotalCoinLeft;
+        PlayerController.OnPowerUpStatusUpdated -= UpdatePowerUpStatus;
+        Coin.OnPowerUpStatusUpdated -= UpdatePowerUpStatus;
         restartButton.onClick.RemoveListener(RestartGame);
     }
 
-    private void UpdateScore(int score)
+    private void UpdateScore(float score)
     {
         scoreTextMesh.text = $"Score: {score}";
         Debug.Log("Score updated");
@@ -47,7 +53,36 @@ public class UIManager : MonoBehaviour
 
     private void UpdateTotalCoinLeft(int totalCoin)
     {
-        TotalCoinLeftTextMesh.text = $"Total coins left: {totalCoin}";
+        totalCoinLeftTextMesh.text = $"Total coins left: {totalCoin}";
+    }
+
+    private void UpdatePowerUpStatus(string powerUpName, float timeLeft)
+    {
+        // This can be expanded for other power-ups like the coin boost
+        if (powerUpName == "Speed")
+        {
+            if (timeLeft > 0)
+            {
+                speedTextMesh.text = $"Speed Boost: {timeLeft:F0}s";
+                speedTextMesh.gameObject.SetActive(true);
+            }
+            else
+            {
+                speedTextMesh.gameObject.SetActive(false);
+            }
+        }
+        else if (powerUpName == "Coin")
+        {
+            if (timeLeft > 0)
+            {
+                coinTextMesh.text = $"Coin Boost: {timeLeft:F0}s"; //F0 means there will be no number behind comma
+                coinTextMesh.gameObject.SetActive(true);
+            }
+            else
+            {
+                coinTextMesh.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void RestartGame() //Made it public so it can be used as onClick in the UI inspector

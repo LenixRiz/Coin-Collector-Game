@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private int totalCoinCollected = 0;
+    private float totalCoinCollected = 0;
     private int totalCoin;
     private int finalScore;
-    public static event Action<int> OnScoreUpdated;
-    public static event Action<int> CountAllCoinsInScene;
+    public static event Action<float> OnScoreUpdated;
     public static event Action<int> OnGameOver;
     public static event Action<int> OnGameWon;
+    public static event Action<int> OnTotalCoinUpdated;
 
     private void OnEnable()
     {
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     {
         InitializeCoinCount();
         OnScoreUpdated?.Invoke(totalCoinCollected);
-        CountAllCoinsInScene?.Invoke(totalCoin);
+        OnTotalCoinUpdated?.Invoke(totalCoin);
     }
 
     private void InitializeCoinCount()
@@ -54,14 +54,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void HandleCoinCollected(int value)
+    private void HandleCoinCollected(float value)
     {
         totalCoinCollected += value;
         Debug.Log($"Total coins collected: {totalCoinCollected}");
 
         totalCoin--;
-        CountAllCoinsInScene?.Invoke(totalCoin);
         Debug.Log($"Total coins left: {totalCoin}");
+        OnTotalCoinUpdated?.Invoke(totalCoin);
 
         if (totalCoin <= 0)
         {
