@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1791688523576591865}
   - component: {fileID: 4488358120400391004}
-  - component: {fileID: 7391458182896869464}
+  - component: {fileID: 8749177084227809802}
   m_Layer: 0
   m_Name: DangerZone
   m_TagString: Untagged
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 786246520185845372}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 9.53, y: -3.75973, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -80,7 +80,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0
---- !u!114 &7391458182896869464
+--- !u!114 &8749177084227809802
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,6 +93,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 25
+  speed: 3
+  player: {fileID: 0}
 --- !u!1 &7763298214710701573
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,8 +171,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.9811321, g: 0.23602703, b: 0.23602703, a: 1}
+  m_Sprite: {fileID: 3167268118429157333, guid: c988f4602a0afa54ab52afa2975259c5, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
