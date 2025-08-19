@@ -93,8 +93,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 25
-  speed: 3
-  player: {fileID: 0}
+  speed: 2.5
+  pursuingDistance: 8
+  wanderingInterval: 2
 --- !u!1 &7763298214710701573
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,7 +172,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3167268118429157333, guid: c988f4602a0afa54ab52afa2975259c5, type: 3}
+  m_Sprite: {fileID: -6066461974970091630, guid: e01b39565faea2542a70b152e7b81d79, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
