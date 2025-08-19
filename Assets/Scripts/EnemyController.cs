@@ -1,22 +1,19 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class DangerZone : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
+    [SerializeField] private float health = 100f;
     [SerializeField] private float damage = 25f;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float pursuingDistance = 8;
     [SerializeField] private float wanderingInterval = 2;
     private float distance;
-    private float timer;
     private bool isRunning = false;
     private bool hasLogged = false;
-    private bool hasUpdateWander = false;
     private Vector2 wanderPosition;
     private Transform playerTransform;
-    private Transform coinTransform;
 
     public static event Action<string> OnPursuing;
 
@@ -28,9 +25,8 @@ public class DangerZone : MonoBehaviour
     private void Start()
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        GameObject coinObject = GameObject.FindGameObjectWithTag("Coin");
 
-        coinTransform = coinObject.transform;
+        StartCoroutine(SetEnemyPosition(wanderingInterval));
 
         if (playerObject != null)
         {
@@ -46,23 +42,13 @@ public class DangerZone : MonoBehaviour
 
     private void Update()
     {
-        //if player died do nothing
+        //if player died, do nothing
         if (playerTransform == null)
         {
             return;
         }
-
         EnemyMovement(wanderPosition);
-
-        timer += Time.deltaTime;
-        if (timer >= wanderingInterval )
-        {
-            SetEnemyPosition();
-            timer = 0f;
-            EnemyMovement(wanderPosition);
-        }
     }
-
 
     private void EnemyMovement(Vector2 wanderPosition)
     {
@@ -98,19 +84,26 @@ public class DangerZone : MonoBehaviour
         }
     }
 
-    private void SetEnemyPosition()
+    private IEnumerator SetEnemyPosition(float interval)
     {
-        if (!hasUpdateWander)
+        while (true) 
         {
-            float wanderPositionX = UnityEngine.Random.Range(1f, 50f);
-            float wanderPositionY = UnityEngine.Random.Range(1f, 50f);
+            float wanderPositionX = UnityEngine.Random.Range(-50f, 50f);
+            float wanderPositionY = UnityEngine.Random.Range(-50f, 50f);
             Debug.Log($"Creating new wander position at {wanderPositionX:F0},{wanderPositionY:F0}.");
             wanderPosition = new Vector2(wanderPositionX, wanderPositionY);
-            hasUpdateWander = true;
+            
+            yield return new WaitForSeconds(interval);
         }
-        else
+    }
+
+    private void OnDestroy()
+    {
+        if (health <= 0)
         {
-           hasUpdateWander = false;
+            Debug.Log($"{this.name} dead!");
+            Destroy(gameObject);
+            EnemyManager.Destroy(gameObject);
         }
     }
 }

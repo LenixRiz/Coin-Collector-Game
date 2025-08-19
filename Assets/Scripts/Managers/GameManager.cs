@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class GameManager : MonoBehaviour
     private int totalCoin;
     private int finalScore;
     private int highscore;
+    public static event Action<int> TotalCoinCount;
     public static event Action<float> OnScoreUpdated;
     public static event Action<int> OnGameOver;
     public static event Action<int> OnGameWon;
@@ -17,12 +19,14 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         PlayerController.OnHealthChanged += HandleHealthChanged;
+        CoinManager.OnCoinsChanged += ReceiveCoinFromManager;
         Coin.OnCoinCollected += HandleCoinCollected;
     }
 
     private void OnDisable()
     {
         PlayerController.OnHealthChanged -= HandleHealthChanged;
+        CoinManager.OnCoinsChanged -= ReceiveCoinFromManager;
         Coin.OnCoinCollected -= HandleCoinCollected;
     }
 
@@ -41,6 +45,13 @@ public class GameManager : MonoBehaviour
         GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
         totalCoin = coins.Length;
         Debug.Log($"Total coins: {totalCoin}");
+        TotalCoinCount?.Invoke(totalCoin);
+    }
+
+    private void ReceiveCoinFromManager(int value)
+    {
+        totalCoin = value;
+        OnTotalCoinUpdated?.Invoke(totalCoin);
     }
 
     private void FinalScore()

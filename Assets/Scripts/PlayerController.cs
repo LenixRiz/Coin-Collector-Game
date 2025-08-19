@@ -57,9 +57,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.TryGetComponent(out DangerZone dangerZone))
+        if (other.gameObject.TryGetComponent(out EnemyController enemyController))
         {
-            TakeDamage(dangerZone.GetDamage());
+            TakeDamage(enemyController.GetDamage());
         }
     }
 

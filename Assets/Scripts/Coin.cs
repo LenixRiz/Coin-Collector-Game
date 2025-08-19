@@ -19,6 +19,7 @@ public class Coin : MonoBehaviour
         CoinPowerUp.OnCoinPowerUp -= OnCoinPowerUp;
     }
 
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent(out PlayerController playerController))
@@ -26,6 +27,7 @@ public class Coin : MonoBehaviour
             Debug.Log("You got a coin!");
             OnCoinCollected?.Invoke(coinValue);
 
+            CoinManager.instance.CoinDestroyed();
             Destroy(gameObject);
         }
     }

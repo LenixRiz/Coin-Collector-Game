@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnHighscoreUpdated += UpdateHighScore;
         PlayerController.OnPowerUpStatusUpdated += UpdatePowerUpStatus;
         Coin.OnPowerUpStatusUpdated += UpdatePowerUpStatus;
-        DangerZone.OnPursuing += OnEnemyChase;
+        EnemyController.OnPursuing += OnEnemyChase;
         restartButton.onClick.AddListener(RestartGame);
     }
 
@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnHighscoreUpdated -= UpdateHighScore;
         PlayerController.OnPowerUpStatusUpdated -= UpdatePowerUpStatus;
         Coin.OnPowerUpStatusUpdated -= UpdatePowerUpStatus;
-        DangerZone.OnPursuing -= OnEnemyChase;
+        EnemyController.OnPursuing -= OnEnemyChase;
         restartButton.onClick.RemoveListener(RestartGame);
     }
 

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4488358120400391004}
   - component: {fileID: 8749177084227809802}
   m_Layer: 0
-  m_Name: DangerZone
-  m_TagString: Untagged
+  m_Name: Enemy
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 786246520185845372}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.53, y: -3.75973, z: 0}
+  m_LocalPosition: {x: -0.01354, y: 1.83673, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -94,8 +94,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 25
   speed: 2.5
-  pursuingDistance: 8
-  wanderingInterval: 2
+  pursuingDistance: 10
+  wanderingInterval: 10
 --- !u!1 &7763298214710701573
 GameObject:
   m_ObjectHideFlags: 0
